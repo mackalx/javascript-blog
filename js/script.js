@@ -39,9 +39,15 @@ const titleClickHandler = function(event){
   const articleSelector = clickedElement.getAttribute('href');
   console.log('article selected', articleSelector);
 
-  /* find the correct article using the selector (value of 'href' attribute) */
+  /* [DONE] find the correct article using the selector (value of 'href' attribute) */
 
-  /* add class 'active' to the correct article */
+  const targetArticle = document.querySelector(articleSelector); //to rethink! why #
+  console.log('article found', targetArticle);
+
+  /* [DONE] add class 'active' to the correct article */
+
+  targetArticle.classList.add('active');
+  console.log('article .active added', targetArticle);
 }
 
 const links = document.querySelectorAll('.titles a');

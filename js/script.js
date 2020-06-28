@@ -6,7 +6,7 @@
 // });
 
 const titleClickHandler = function(event){
-  event.preventDefault();
+  event.preventDefault(); //rethink why it has to be here
   console.log('Link was clicked!', event);
 
   /* [DONE] remove class 'active' from all article links  */
@@ -31,7 +31,7 @@ const titleClickHandler = function(event){
 
   for(let activeArticle of activeArticles){
     activeArticle.classList.remove('active');
-    console.log('article .active removed', activeArticle)
+    console.log('article .active removed', activeArticle);
   }
 
   /* [DONE] get 'href' attribute from the clicked link */
@@ -48,11 +48,11 @@ const titleClickHandler = function(event){
 
   targetArticle.classList.add('active');
   console.log('article .active added', targetArticle);
-}
+};
 
 const optArticleSelector = '.post',
-      optTitleSelector = '.post-title',
-      optTitleListSelector = '.titles';
+  optTitleSelector = '.post-title',
+  optTitleListSelector = '.titles';
 
 const generateTitleLinks = function(){
  
@@ -65,7 +65,7 @@ const generateTitleLinks = function(){
 
   const articles = document.querySelectorAll(optArticleSelector);
 
-  let html = ''; //rethink why not inside the loop 
+  let html = ''; //rethink why not inside the loop and why empty
 
   for(let article of articles){
     
@@ -87,7 +87,7 @@ const generateTitleLinks = function(){
     
     /* [DONE] insert link into titleList */
     
-    html = html + linkHTML;
+    html = html + linkHTML; //rethink why it needs '' empty content with linkHTML that contains exactly the code we want
 
     console.log('content is', html);
   }
@@ -97,8 +97,8 @@ const generateTitleLinks = function(){
   console.log('contents of const links', links);
 
   for(let link of links){
-  link.addEventListener('click', titleClickHandler);
+    link.addEventListener('click', titleClickHandler);
   }
-}
+};
 
 generateTitleLinks();

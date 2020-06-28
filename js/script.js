@@ -93,7 +93,7 @@ const generateTitleLinks = function(){
   }
 
   titleList.innerHTML = html;
-  const links = document.querySelectorAll('.titles a'); //rethink why does it work now only inside function
+  const links = document.querySelectorAll('.titles a'); //rethink why does it work now - only inside function
   console.log('contents of const links', links);
 
   for(let link of links){

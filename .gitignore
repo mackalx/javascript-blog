@@ -117,3 +117,6 @@ dist
 
 # generated css file
 css/style.css
+
+# min css file
+css/style.css.map

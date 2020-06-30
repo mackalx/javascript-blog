@@ -33,7 +33,8 @@ const titleClickHandler = function(event){
 const optArticleSelector = '.post',
   optTitleSelector = '.post-title',
   optTitleListSelector = '.titles',
-  optArticleTagsSelector = '.post-tags .list';
+  optArticleTagsSelector = '.post-tags .list',
+  optArticleAuthorSelector = '.post-author';
 
 const generateTitleLinks = function(customSelector = ''){
   /* [DONE] remove contents of titleList */
@@ -165,3 +166,55 @@ const addClickListenersToTags = function(){
 };
 
 addClickListenersToTags();
+
+const generateAuthors = function(){
+  const articles = document.querySelectorAll(optArticleSelector); //find all .post in html
+  
+  for(let article of articles){ //for every .post of all .post
+    const articleAuthorWrapper = article.querySelector(optArticleAuthorSelector); //find .post-author in article element
+
+    const author = article.getAttribute('data-author'); //get data-author tag from .post (in this case article element)
+    
+    const hardSpace = author.replace('-', '&nbsp;'); //get rid of '-' from tag to later insert name displayed with hard space
+
+    const authorHTML = 'by&nbsp;' + '<a href="#author-' + author + '">' + hardSpace + '</a>'; //prepare HTML for the link
+
+    articleAuthorWrapper.innerHTML = authorHTML; //insert data-author tag to .post-author html element
+  }
+};
+
+generateAuthors();
+
+const authorClickHandler = function(event){
+  event.preventDefault(); //prevent default action for event (propagation)
+  
+  const clickedElement = this;
+
+  const href = clickedElement.getAttribute('href');
+
+  const author = href.replace('#author-', '');
+
+  const activeAuthorLinks = document.querySelectorAll('a[href="' + href + '"]'); // ###
+
+  for(let activeAuthorLink of activeAuthorLinks){
+    activeAuthorLink.classList.remove('active'); // ###
+  }
+
+  const hrefAuthorLinks = document.querySelectorAll('href'); // ###
+
+  for(let hrefAuthorLink of hrefAuthorLinks){
+    hrefAuthorLink.classList.add('active');
+  }
+
+  generateTitleLinks('[data-author="' + author + '"]'); // ###
+};
+
+const addClickListenersToAuthors = function(){
+  const links = document.querySelectorAll('.post-author a'); // links to all authors in HTML
+
+  for(let link of links){ // for each link of every link to authors
+    link.addEventListener('click', authorClickHandler);
+  }
+};
+
+addClickListenersToAuthors();

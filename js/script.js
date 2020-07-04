@@ -10,6 +10,8 @@ const optArticleSelector = '.post',
   optCloudClassCount = '5',
   optCloudClassPrefix = 'tag-size-';
 
+/* ####################### TITLES ####################### */
+
 const titleClickHandler = function(event) {
   event.preventDefault(); // #rethink why it has to be here# because we want the listener to execute function?
   
@@ -35,8 +37,6 @@ const titleClickHandler = function(event) {
 
   targetArticle.classList.add('active'); // add class 'active' to the correct article
 };
-
-
 
 const generateTitleLinks = function(customSelector = '') {
   const titleList = document.querySelector(optTitleListSelector); // finding .titles 
@@ -67,6 +67,8 @@ const generateTitleLinks = function(customSelector = '') {
 };
 
 generateTitleLinks();
+
+/* ####################### TAGS ####################### */
 
 const calculateTagsParams = function(tags) { // #rethink why it works#
   const params = {max: 0, min: 999999}; // #why max 0#
@@ -174,6 +176,7 @@ const addClickListenersToTags = function() {
 
 addClickListenersToTags();
 
+/* ####################### AUTHORS ####################### */
 
 const generateAuthors = function() {
   let allAuthors = {}; // create a new variable allAuthors with an empty object
@@ -185,7 +188,7 @@ const generateAuthors = function() {
 
     const author = article.getAttribute('data-author'); // get data-author tag from .post (in this case article element)
 
-    const authorHTML = 'by&nbsp;' + '<a href="#author-' + author + '">' + author.replace('-', '&nbsp;'); + '</a>'; // prepare HTML for the link
+    const authorHTML = 'by&nbsp;' + '<a href="#author-' + author + '">' + author.replace('-', '&nbsp;') + '</a>'; // prepare HTML for the link
 
     if(!allAuthors[author]) { // check if this link is NOT already in allAuthors
       allAuthors[author] = 1; // if there is not set 1

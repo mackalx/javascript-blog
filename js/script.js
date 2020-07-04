@@ -34,7 +34,8 @@ const optArticleSelector = '.post',
   optTitleSelector = '.post-title',
   optTitleListSelector = '.titles',
   optArticleTagsSelector = '.post-tags .list',
-  optArticleAuthorSelector = '.post-author';
+  optArticleAuthorSelector = '.post-author',
+  optTagsListSelector = '.tags .list';
 
 const generateTitleLinks = function(customSelector = ''){
   /* [DONE] remove contents of titleList */
@@ -73,6 +74,9 @@ const generateTitleLinks = function(customSelector = ''){
 generateTitleLinks();
 
 const generateTags = function(){
+  /* [NEW] create a new variable allTags with an empty array (in this case changed to object) */
+  let allTags = {};
+
   /* [DONE] find all articles */
   const articles = document.querySelectorAll(optArticleSelector);
 
@@ -95,12 +99,19 @@ const generateTags = function(){
     for(let tag of articleTagsArray){
 
       /* [DONE] generate HTML of the link */
-      const tagHTML = '<li><a href="#' + tag + '">' + tag + '</a></li>';
+      const linkHTML = '<li><a href="#tag-' + tag + '">' + tag + '</a></li> ';
 
       /* [DONE] add generated code to html variable */
-      html = html + tagHTML;
+      html = html + linkHTML;
 
-    /* [DONE] END LOOP: for each tag */
+      /* [NEW] check if this link is NOT already in allTags */
+      if(!allTags[tag]) {
+        /* [NEW] add tag to allTags object */
+        allTags[tag] = 1;
+      } else {
+        allTags[tag]++;
+      }
+      /* [DONE] END LOOP: for each tag */
     }
 
     /* [DONE] insert HTML of all the links into the tags wrapper */
@@ -108,6 +119,21 @@ const generateTags = function(){
 
   /* [DONE] END LOOP: for every article: */
   }
+  /* [NEW] find list of tags in right column */
+  const tagList = document.querySelector('.tags');
+
+  /* [NEW] create variable for all links HTML code */
+  let allTagsHTML = '';
+
+  /* [NEW] START LOOP: for each tag in allTags: */
+  for(let tag in allTags){
+    /* [NEW] generate code of a link and add it to allTagsHTML */
+    allTagsHTML += '<li><a href="#tag-' + tag + '">' + tag + '</a> (' + allTags[tag] + ') </li>';
+  }
+  /* [NEW] END LOOP: for each tag in allTags: */
+
+  /*[NEW] add HTML from allTagsHTML to tagList */
+  tagList.innerHTML = allTagsHTML;
 };
 
 generateTags();
@@ -175,9 +201,9 @@ const generateAuthors = function(){
 
     const author = article.getAttribute('data-author'); //get data-author tag from .post (in this case article element)
     
-    const hardSpace = author.replace('-', '&nbsp;'); //get rid of '-' from tag to later insert name displayed with hard space
+    const dashToHardSpace = author.replace('-', '&nbsp;'); //get rid of '-' from tag to later insert name displayed with hard space
 
-    const authorHTML = 'by&nbsp;' + '<a href="#author-' + author + '">' + hardSpace + '</a>'; //prepare HTML for the link
+    const authorHTML = 'by&nbsp;' + '<a href="#author-' + author + '">' + dashToHardSpace + '</a>'; //prepare HTML for the link
 
     articleAuthorWrapper.innerHTML = authorHTML; //insert data-author tag to .post-author html element
   }

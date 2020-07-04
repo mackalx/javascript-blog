@@ -95,9 +95,14 @@ body {
   .tags {
     li {
       display: inline;
-      a{
+      a {
         text-decoration: none;
       }
+    }
+  }
+  .authors {
+    a {
+      text-decoration: none;
     }
   }
 } 

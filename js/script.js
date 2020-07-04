@@ -5,16 +5,17 @@ const optArticleSelector = '.post',
   optTitleListSelector = '.titles',
   optArticleTagsSelector = '.post-tags .list',
   optArticleAuthorSelector = '.post-author',
-  optTagsListSelector = '.tags .list',
+  optTagsListSelector = '.tags',
+  optAuthorsListSelector = '.authors',
   optCloudClassCount = '5',
   optCloudClassPrefix = 'tag-size-';
 
-const titleClickHandler = function(event){
+const titleClickHandler = function(event) {
   event.preventDefault(); // #rethink why it has to be here# because we want the listener to execute function?
   
   const activeLinks = document.querySelectorAll('.titles a.active'); // remove class 'active' from all article links
 
-  for(let activeLink of activeLinks){
+  for(let activeLink of activeLinks) {
     activeLink.classList.remove('active');
   }
 
@@ -24,7 +25,7 @@ const titleClickHandler = function(event){
 
   const activeArticles = document.querySelectorAll('.posts article.active');
 
-  for(let activeArticle of activeArticles){ // remove class 'active' from all articles
+  for(let activeArticle of activeArticles) { // remove class 'active' from all articles
     activeArticle.classList.remove('active');
   }
 
@@ -37,7 +38,7 @@ const titleClickHandler = function(event){
 
 
 
-const generateTitleLinks = function(customSelector = ''){
+const generateTitleLinks = function(customSelector = '') {
   const titleList = document.querySelector(optTitleListSelector); // finding .titles 
   
   titleList.innerHTML = ''; // and changing their content to blank
@@ -46,7 +47,7 @@ const generateTitleLinks = function(customSelector = ''){
 
   let titleHtml = ''; // #rethink why not inside the loop and why empty#
 
-  for(let article of articles){
+  for(let article of articles) {
     const articleId = article.getAttribute('id'); // get the article id
 
     const articleTitle = article.querySelector(optTitleSelector).innerHTML; // find the title element and get the title from the title element
@@ -60,7 +61,7 @@ const generateTitleLinks = function(customSelector = ''){
   
   const links = document.querySelectorAll('.titles a'); // #rethink why does it work now - only inside function#
 
-  for(let link of links){
+  for(let link of links) {
     link.addEventListener('click', titleClickHandler); 
   }
 };
@@ -70,11 +71,11 @@ generateTitleLinks();
 const calculateTagsParams = function(tags) { // #rethink why it works#
   const params = {max: 0, min: 999999}; // #why max 0#
   
-  for(let tag in tags){ // for ... in for operation on every element in object #where does tag lead#
-    if(tags[tag] > params.max){
+  for(let tag in tags) { // for ... in for operation on every element in object #where does tag lead#
+    if(tags[tag] > params.max) {
       params.max = tags[tag];
     }
-    if(tags[tag] < params.min){
+    if(tags[tag] < params.min) {
       params.min = tags[tag];
     }
   }
@@ -93,12 +94,12 @@ const calculateTagClass = function(count, params) {
   return optCloudClassPrefix + classNumber; // return tag-size- with generated integer
 };
 
-const generateTags = function(){
-  let allTags = {}; // create a new variable allTags with an empty array (in this case changed to object)
+const generateTags = function() {
+  let allTags = {}; // create a new variable allTags with an empty object
 
   const articles = document.querySelectorAll(optArticleSelector); // find all articles
   
-  for(let article of articles){ // START LOOP: for every article:
+  for(let article of articles) { // START LOOP: for every article:
     const articleTagsWrapper = article.querySelector(optArticleTagsSelector);  // find tags wrapper
 
     let tagHtml = ''; // make html variable with empty string
@@ -107,7 +108,7 @@ const generateTags = function(){
 
     const articleTagsArray = articleTags.split(' '); // split tags into array
 
-    for(let tag of articleTagsArray){ // START LOOP: for each tag
+    for(let tag of articleTagsArray) { // START LOOP: for each tag
       const tagLinkHTML = '<li><a href="#tag-' + tag + '">' + tag + '</a></li> '; // generate tags HTML links in the .posts .list-horizontal ul
 
       tagHtml = tagHtml + tagLinkHTML; // add generated code to html variable
@@ -122,14 +123,14 @@ const generateTags = function(){
     articleTagsWrapper.innerHTML = tagHtml;  // insert HTML of all the links into the tags wrapper
   }  // END LOOP: for every article
 
-  const tagList = document.querySelector('.tags'); // find list of tags in right column
+  const tagList = document.querySelector(optTagsListSelector); // find list of tags in right column
 
   const tagsParams = calculateTagsParams(allTags); // calculated max and min for all tags
 
-  let allTagsHTML = ''; // create variable for all links HTML code
+  let allTagsHTML = ''; // create variable for all tag links HTML code
 
-  for(let tag in allTags){ // START LOOP: for each tag in allTags:
-    const allTagLinkHTML = '<li><a class="' + calculateTagClass(allTags[tag], tagsParams) + '" href="#tag-' + tag + '">' + tag + '</a> </li>'; // tags HTML in the sidebar .list .tags ul  
+  for(let tag in allTags) { // START LOOP: for each tag in allTags:
+    const allTagLinkHTML = '<li><a class="' + calculateTagClass(allTags[tag], tagsParams) + '" href="#tag-' + tag + '">' + tag + '</a> </li>'; // tags HTML in the .sidebar .list .tags ul  
     
     allTagsHTML += allTagLinkHTML; // generate code of a link and add it to allTagsHTML
   } // END LOOP: for each tag in allTags
@@ -139,7 +140,7 @@ const generateTags = function(){
 
 generateTags();
 
-const tagClickHandler = function(event){
+const tagClickHandler = function(event) {
   event.preventDefault();   // prevent default action for this event
 
   const clickedElement = this; // make new constant named "clickedElement" and give it the value of "this"
@@ -150,43 +151,62 @@ const tagClickHandler = function(event){
 
   const activeTagLinks = document.querySelectorAll('a.active[href^="#tag-"]'); // find all tag links with class active
 
-  for(let activeTagLink of activeTagLinks){ // START LOOP: for each active tag link
+  for(let activeTagLink of activeTagLinks) { // START LOOP: for each active tag link
     activeTagLink.classList.remove('active');   // remove class active
   } // END LOOP: for each active tag link
 
   const hrefTagLinks = document.querySelectorAll('a[href="' + href + '"]'); // find all tag links with "href" attribute equal to the "href" constant
 
-  for(let hrefTagLink of hrefTagLinks){  // START LOOP: for each found tag link
+  for(let hrefTagLink of hrefTagLinks) {  // START LOOP: for each found tag link
     hrefTagLink.classList.add('active'); // add class active
   } //END LOOP: for each found tag link
 
   generateTitleLinks('[data-tags~="' + tag + '"]');   // execute function "generateTitleLinks" with article selector as argument
 };
 
-const addClickListenersToTags = function(){
+const addClickListenersToTags = function() {
   const links = document.querySelectorAll(optArticleTagsSelector);   // find all links to tags
 
-  for(let link of links){ // START LOOP: for each link
+  for(let link of links) { // START LOOP: for each link
     link.addEventListener('click', tagClickHandler); // add tagClickHandler as event listener for that link
   } // END LOOP: for each link
 };
 
 addClickListenersToTags();
 
-const generateAuthors = function(){
+
+const generateAuthors = function() {
+  let allAuthors = {}; // create a new variable allAuthors with an empty object
+
   const articles = document.querySelectorAll(optArticleSelector); // find all .post in html
   
-  for(let article of articles){ // for every .post of all .post
+  for(let article of articles) { // START LOOP: for every .post of all .post
     const articleAuthorWrapper = article.querySelector(optArticleAuthorSelector); // find .post-author in article element
 
     const author = article.getAttribute('data-author'); // get data-author tag from .post (in this case article element)
-    
-    const dashToHardSpace = author.replace('-', '&nbsp;'); // get rid of '-' from tag to later insert name displayed with hard space
 
-    const authorHTML = 'by&nbsp;' + '<a href="#author-' + author + '">' + dashToHardSpace + '</a>'; // prepare HTML for the link
+    const authorHTML = 'by&nbsp;' + '<a href="#author-' + author + '">' + author.replace('-', '&nbsp;'); + '</a>'; // prepare HTML for the link
+
+    if(!allAuthors[author]) { // check if this link is NOT already in allAuthors
+      allAuthors[author] = 1; // if there is not set 1
+    } else {
+      allAuthors[author]++; // if there is increase number in loop by 1
+    }
 
     articleAuthorWrapper.innerHTML = authorHTML; // insert data-author tag to .post-author html element
-  }
+  } // END LOOP
+  
+  const authorList = document.querySelector(optAuthorsListSelector); // find list of authors in right column
+
+  let allAuthorsHTML = ''; // create variable for all author links HTML code
+
+  for(let author in allAuthors) { // START LOOP: for each author in allAuthors object:
+    const allAuthorsLinkHTML = '<li><a href="#author-' + author + '">' + author.replace('-', '&nbsp;') + ' (' + allAuthors[author] + ') </a> </li>'; // tags HTML in the .sidebar .authors ul  
+    
+    allAuthorsHTML += allAuthorsLinkHTML; // generate code of a link and add it to allAuthorsHTML
+  } // END LOOP: for each tag in allTags
+
+  authorList.innerHTML = allAuthorsHTML; // add HTML from allAuthorsHTML to authorList
 };
 
 generateAuthors();

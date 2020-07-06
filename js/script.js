@@ -186,7 +186,7 @@ const tagClickHandler = function(event) {
 };
 
 const addClickListenersToTags = function(tagsSelector) {
-  const links = document.querySelectorAll(tagsSelector);   // find all links to tags wit a selector argument
+  const links = document.querySelectorAll(tagsSelector);   // find all links to tags with a selector argument
 
   for(let link of links) { // START LOOP: for each link
     link.addEventListener('click', tagClickHandler); // add tagClickHandler as event listener for that link
@@ -255,13 +255,13 @@ const authorClickHandler = function(event){
 
   const author = href.replace('#author-', '');
 
-  const activeAuthorLinks = document.querySelectorAll('a[href="' + href + '"]'); // #
+  const activeAuthorLinks = document.querySelectorAll('a.active[href^="#author-"]'); // #
 
   for(let activeAuthorLink of activeAuthorLinks){
     activeAuthorLink.classList.remove('active'); // #
   }
 
-  const hrefAuthorLinks = document.querySelectorAll('href'); // #
+  const hrefAuthorLinks = document.querySelectorAll('a[href="' + href + '"]'); // #
 
   for(let hrefAuthorLink of hrefAuthorLinks){
     hrefAuthorLink.classList.add('active');

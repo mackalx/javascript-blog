@@ -18,14 +18,10 @@ const optArticleSelector = '.post',
   optCloudClassCount = '5',
   optCloudClassPrefix = 'tag-size-';
 
-
-
-
-
 /* ####################### TITLES/ARTICLES ####################### */
 
 const titleClickHandler = function(event) {
-  event.preventDefault(); // #rethink why it has to be here# because we want the listener to execute function?
+  event.preventDefault(); // #rethink why it has to be here#
   
   const activeLinks = document.querySelectorAll('.titles a.active'); // remove class 'active' from all article links
 
@@ -168,7 +164,7 @@ generateTags();
 const tagClickHandler = function(event) {
   event.preventDefault();   // prevent default action for this event
 
-  const clickedElement = this; // make new constant named "clickedElement" and give it the value of "this"
+  const clickedElement = event.target; // make new constant named "clickedElement" and give it the value of event.target
 
   const href = clickedElement.getAttribute('href'); // make a new constant "href" and read the attribute "href" of the clicked element
 
@@ -189,15 +185,16 @@ const tagClickHandler = function(event) {
   generateTitleLinks('[data-tags~="' + tag + '"]');   // execute function "generateTitleLinks" with article selector as argument
 };
 
-const addClickListenersToTags = function() {
-  const links = document.querySelectorAll(optArticleTagsSelector);   // find all links to tags
+const addClickListenersToTags = function(tagsSelector) {
+  const links = document.querySelectorAll(tagsSelector);   // find all links to tags wit a selector argument
 
   for(let link of links) { // START LOOP: for each link
     link.addEventListener('click', tagClickHandler); // add tagClickHandler as event listener for that link
   } // END LOOP: for each link
 };
 
-addClickListenersToTags();
+addClickListenersToTags(optArticleTagsSelector);
+addClickListenersToTags(optTagsListSelector);
 
 /* ####################### AUTHORS ####################### */
 
@@ -252,7 +249,7 @@ generateAuthors();
 const authorClickHandler = function(event){
   event.preventDefault(); // prevent default action for event (propagation)
   
-  const clickedElement = this;
+  const clickedElement = event.target;
 
   const href = clickedElement.getAttribute('href');
 
@@ -273,12 +270,13 @@ const authorClickHandler = function(event){
   generateTitleLinks('[data-author="' + author + '"]'); // #
 };
 
-const addClickListenersToAuthors = function(){
-  const links = document.querySelectorAll('.post-author a'); // links to all authors in HTML
+const addClickListenersToAuthors = function(authorsSelector){
+  const links = document.querySelectorAll(authorsSelector); // links to all authors in HTML with a selector argument
 
   for(let link of links){ // for each link of every link to authors
     link.addEventListener('click', authorClickHandler);
   }
 };
 
-addClickListenersToAuthors();
+addClickListenersToAuthors(optArticleAuthorSelector);
+addClickListenersToAuthors(optAuthorsListSelector);
